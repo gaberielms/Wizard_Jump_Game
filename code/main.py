@@ -20,6 +20,15 @@ menu = Menu(screen)
 menu.show_main()
 map = Map(data, screen)
 
+alagard = pygame.font.Font('..\\fonts\\alagard.ttf', 25)
+current_time = 0
+start_time = 0
+def display_score():
+    current_time = int(time.get_ticks() / 1000) - start_time
+    score_sfc = alagard.render(str(current_time), False, (0,0,0))
+    score_rect = score_sfc.get_rect(topleft = (50, 50))
+    screen.blit(score_sfc, score_rect)
+
 
 # game loop
 while True:
@@ -60,7 +69,7 @@ while True:
         #display
         screen.fill((128,128,128))
         map.run()
-
+        display_score()
 
 
     display.update()

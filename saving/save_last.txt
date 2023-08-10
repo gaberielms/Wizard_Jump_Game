@@ -1,1 +1,1 @@
-{"map_data": {"terrain": "..\\map_data\\map_data.csv"}, "screen_width": 800, "screen_height": 600, "player_start_position": [359, 117], "player_start_direction": [0.0, 0.4], "player_facing": "right", "map_start": 30897.2}
+{"map_data": {"terrain": "..\\map_data\\map_data.csv"}, "screen_width": 800, "screen_height": 600, "player_start_position": [95, 384], "player_start_direction": [0.0, 0.0], "player_facing": "left", "map_start": 31400}
