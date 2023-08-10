@@ -9,7 +9,7 @@ class Menu:
         self.option_group = pygame.sprite.Group()
 
         for option in self.options:
-            alagard = pygame.font.Font('fonts\\alagard.ttf', 25)
+            alagard = pygame.font.Font('..\\fonts\\alagard.ttf', 25)
             msg = alagard.render(option, False, (50,50,50))
             loc = (400, (self.options.index(option) * 75) + 240)
             spr1 = MenuSprite(msg, loc)
@@ -20,7 +20,7 @@ class Menu:
         self.display.fill((119,136,153))
 
         self.option_group.draw(self.display)
-        alagard = pygame.font.Font('fonts\\alagard.ttf', 30)
+        alagard = pygame.font.Font('..\\fonts\\alagard.ttf', 30)
         message = alagard.render('Wizard Jump Game.', False, (50,50,50))
         message_rect = message.get_rect(center = (400,140))
         self.display.blit(message, message_rect)
@@ -29,7 +29,7 @@ class Menu:
         self.main_menu = False
         self.display.fill((176,180,255))
 
-        alagard = pygame.font.Font('fonts\\alagard.ttf', 30)
+        alagard = pygame.font.Font('..\\fonts\\alagard.ttf', 30)
         message = alagard.render('Settings', False, (50,50,50))
         message_rect = message.get_rect(center = (400,150))
         message2 = alagard.render('YOU CANT CHANGE ANYTHING', False, (50,50,50))
@@ -44,7 +44,7 @@ class Menu:
         self.main_menu = False
         self.display.fill((176,180,255))
 
-        alagard = pygame.font.Font('fonts\\alagard.ttf', 30)
+        alagard = pygame.font.Font('..\\fonts\\alagard.ttf', 30)
         message = alagard.render('About', False, (50,50,50))
         message_rect = message.get_rect(center = (400,150))
         about = alagard.render('if the game breaks it is not my fault', False, (50,50,50))
@@ -57,7 +57,7 @@ class Menu:
 
     def restart(self):
         data = {}
-        data['map_data'] = {"terrain": "map_data\map_data.csv"}
+        data['map_data'] = {"terrain": "..\map_data\map_data.csv"}
         data['screen_width'] = 800
         data['screen_height'] = 600
         data['player_start_position'] = (377,384)
@@ -65,7 +65,7 @@ class Menu:
         data['player_facing'] = 'right'
         data['map_start'] = 31400
 
-        with open('saving\save_last.txt', 'w') as save_file:
+        with open('..\saving\save_last.txt', 'w') as save_file:
             json.dump(data, save_file)
 
         pygame.quit()

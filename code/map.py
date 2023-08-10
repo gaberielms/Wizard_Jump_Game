@@ -30,7 +30,7 @@ class Map:
                     x = col_index * tile_size
                     y = (row_index * tile_size) - self.start_height
 
-                    terrain_blck_lst = import_cut_graphic('graphics\map\dungeon_blocks.png')
+                    terrain_blck_lst = import_cut_graphic('..\graphics\map\dungeon_blocks.png')
                     blck_sfc = terrain_blck_lst[int(place)]
                     block = StaticBlock((x,y), tile_size, blck_sfc)
                     self.blocks.add(block)
@@ -99,7 +99,7 @@ class Map:
     def save(self):
         player = self.player.sprite
         data = {}
-        data['map_data'] = {"terrain": "map_data\map_data.csv"}
+        data['map_data'] = {"terrain": "..\map_data\map_data.csv"}
         data['screen_width'] = 800
         data['screen_height'] = 600
         data['player_start_position'] = (player.rect.x, player.rect.y)

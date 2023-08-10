@@ -8,7 +8,7 @@ from particles import Particles
 # pygame setup
 init()
 
-with open('saving\save_last.txt') as save_file:
+with open('..\saving\save_last.txt') as save_file:
         data = json.load(save_file)
 
 screen = display.set_mode((data['screen_width'], data['screen_height']))
@@ -26,7 +26,7 @@ while True:
     for event in pygame.event.get():
         if event.type == QUIT:
             data = map.save()
-            with open('saving\save_last.txt', 'w') as save_file:
+            with open('..\saving\save_last.txt', 'w') as save_file:
                 json.dump(data, save_file)
             quit()
             sys.exit()
