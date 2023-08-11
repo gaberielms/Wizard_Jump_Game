@@ -16,9 +16,9 @@ class Particles:
                 particle[1] -= 0.5
                 pygame.draw.circle(self.display, '#CBD8E1', particle[0], particle[1])
 
-    def add_particles(self, x_pos, y_pos, x_dir):
+    def add_particles(self, x_pos, y_pos, x_dir, y_dir):
         radius = 3
-        direction_y = random.randint(-50, 0) / 10
+        direction_y = random.randint(-y_dir * 10, 0) / 10
         if x_dir > 0:
             direction_x = random.randint(-x_dir * 10, 0) / 10
         else:

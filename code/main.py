@@ -15,19 +15,11 @@ screen = display.set_mode((data['screen_width'], data['screen_height']))
 clock = time.Clock()
 game_active = False
 
-
 menu = Menu(screen)
 menu.show_main()
 map = Map(data, screen)
 
 alagard = pygame.font.Font('..\\fonts\\alagard.ttf', 25)
-current_time = 0
-start_time = 0
-def display_score():
-    current_time = int(time.get_ticks() / 1000) - start_time
-    score_sfc = alagard.render(str(current_time), False, (0,0,0))
-    score_rect = score_sfc.get_rect(topleft = (50, 50))
-    screen.blit(score_sfc, score_rect)
 
 
 # game loop
@@ -57,20 +49,17 @@ while True:
                 elif menu.option_group.sprites()[2].rect.collidepoint(event.pos):
                     menu.show_about()
                 elif menu.option_group.sprites()[3].rect.collidepoint(event.pos):
-                    menu.restart()
+                    data = menu.restart()
+                    map = Map(data, screen)
         if event.type == KEYDOWN and event.key == K_ESCAPE:
             if game_active:
-                menu.show_main()
                 game_active = False
-            elif not game_active and not menu.main_menu:
-                menu.show_main()  
+            menu.show_main()
             
     if game_active:
         #display
         screen.fill((128,128,128))
         map.run()
-        display_score()
-
 
     display.update()
     clock.tick(60)

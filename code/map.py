@@ -83,9 +83,9 @@ class Map:
         if player.on_ground:
             if player.direction.x != 0:
                 if player.facing_right:
-                    self.particles.add_particles(player.rect.left - 1, player.rect.bottom, player.direction.x)
+                    self.particles.add_particles(player.rect.left - 1, player.rect.bottom, player.direction.x, 5)
                 else:
-                    self.particles.add_particles(player.rect.right + 1, player.rect.bottom, player.direction.x)
+                    self.particles.add_particles(player.rect.right + 1, player.rect.bottom, player.direction.x, 5)
 
     def run(self):
         self.camera.draw(self.display_sfc)

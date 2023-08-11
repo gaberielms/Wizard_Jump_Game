@@ -8,7 +8,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.import_player_assets()
         self.frame_index = 0
-        self.animation_speed = 0.05
+        self.animation_speed = 0.15
         self.image = self.animations['idle'][self.frame_index]
         self.rect = self.image.get_rect(topleft = position)
 
@@ -71,15 +71,15 @@ class Player(pygame.sprite.Sprite):
             self.jump()
 
     def get_status(self):
-        if self.direction.y < 0:
-            self.status = 'jump'
-        elif self.direction.y > 1:
-            self.status = 'fall'
-        else:
+        if self.on_ground:
             if self.direction.x != 0:
                 self.status = 'run'
             else:
                 self.status = 'idle'
+        elif self.direction.y < 0:
+            self.status = 'jump'
+        elif self.direction.y > 1:
+            self.status = 'fall'
         
     def apply_gravity(self):
         if self.direction.y <= self.max_gravity:
@@ -91,5 +91,5 @@ class Player(pygame.sprite.Sprite):
     
     def update(self):
         self.inputs()
-        # self.get_status()
+        self.get_status()
         self.animate()

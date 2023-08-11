@@ -7,6 +7,7 @@ class Menu:
         self.display = display
         self.options = ('Play', 'Settings', 'About', 'Restart Game')
         self.option_group = pygame.sprite.Group()
+        self.background = pygame.image.load('..\graphics\menu\menu.jpg').convert()
 
         for option in self.options:
             alagard = pygame.font.Font('..\\fonts\\alagard.ttf', 25)
@@ -17,11 +18,11 @@ class Menu:
 
     def show_main(self):
         self.main_menu = True
-        self.display.fill((119,136,153))
+        self.display.blit(self.background, (0,0))
 
         self.option_group.draw(self.display)
         alagard = pygame.font.Font('..\\fonts\\alagard.ttf', 30)
-        message = alagard.render('Wizard Jump Game.', False, (50,50,50))
+        message = alagard.render('Wizard Jump', False, (0, 150, 255))
         message_rect = message.get_rect(center = (400,140))
         self.display.blit(message, message_rect)
 
@@ -64,11 +65,12 @@ class Menu:
         data['player_start_direction'] = (0,0)
         data['player_facing'] = 'right'
         data['map_start'] = 31400
+        data['timer'] = 0
 
         with open('..\saving\save_last.txt', 'w') as save_file:
             json.dump(data, save_file)
-
-        pygame.quit()
+        
+        return data
 
 class MenuSprite(pygame.sprite.Sprite):
 
