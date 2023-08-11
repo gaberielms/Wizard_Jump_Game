@@ -24,7 +24,10 @@ class Menu:
         alagard = pygame.font.Font('..\\fonts\\alagard.ttf', 30)
         message = alagard.render('Wizard Jump', False, (0, 150, 255))
         message_rect = message.get_rect(center = (400,140))
+        message2 = alagard.render('(now speedrunable)', False, (0, 150, 255))
+        message2_rect = message2.get_rect(center = (400,175))
         self.display.blit(message, message_rect)
+        self.display.blit(message2, message2_rect)
 
     def show_settings(self):
         self.main_menu = False
