@@ -14,7 +14,8 @@ class Map:
         self.screen_height = data['screen_height']
         self.screen_width = data['screen_width']
         self.map_setup(data['map_data'], data['player_start_position'], data['player_facing'])
-        self.current_pos = 0
+        self.current_x = 0
+        self.current_y = 99999999999999
         self.particles = Particles(surface)
 
     def map_setup(self, layout, player_location, player_facing):
@@ -53,16 +54,17 @@ class Map:
                 if player.direction.x < 0:
                     player.collision_rect.left = block.rect.right
                     player.on_left = True
-                    self.current_pos = player.rect.left
+                    self.current_x = player.rect.left
                 elif player.direction.x > 0:
                     player.collision_rect.right = block.rect.left
                     player.on_right = True
-                    self.current_pos = player.rect.right
+                    self.current_x = player.rect.right
 
 
     def vertical_movement(self):
         player = self.player.sprite
         player.apply_gravity()
+        self.current_y = player.rect.centery
 
         for block in self.blocks.sprites():
             if block.rect.colliderect(player.collision_rect):
@@ -96,12 +98,8 @@ class Map:
         self.particulate()
         self.particles.emit()
 
-    def save(self):
+    def save(self, data):
         player = self.player.sprite
-        data = {}
-        data['map_data'] = {"terrain": "..\map_data\map_data.csv"}
-        data['screen_width'] = 800
-        data['screen_height'] = 600
         data['player_start_position'] = (player.rect.x, player.rect.y)
         data['player_start_direction'] = (player.direction.x, player.direction.y)
         if player.facing_right:
@@ -109,5 +107,4 @@ class Map:
         else:
             data['player_facing'] = 'left'
         data['map_start'] = self.camera.save()
-
         return data

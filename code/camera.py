@@ -22,16 +22,13 @@ class Camera:
         elif (target_pos >= bot) and (self.target.direction.y > 0):
             self.target.collision_rect.centery = bot
             self.blocks.update(-self.target.direction.y)
-
+            
     def draw(self, display):
         self.blocks.draw(display)
         display.blit(self.game_name, self.game_name_rect)
         self.player.draw(display)
 
     def save(self):
-        for block in self.blocks:
-            if block:
-                dev = block.save()
-                break
+        dev = self.blocks.sprites()[0].deviation
         self.map_pos -= dev
         return self.map_pos

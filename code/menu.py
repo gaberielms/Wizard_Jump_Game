@@ -44,7 +44,7 @@ class Menu:
         self.display.blit(message2, message2_rect)
         self.display.blit(message, message_rect)
 
-    def show_about(self):
+    def show_about(self, score):
         self.main_menu = False
         self.display.fill((176,180,255))
 
@@ -55,21 +55,19 @@ class Menu:
         about_rect = about.get_rect(center = (400, 300))
         about2 = alagard.render('just hit restart button dumbass', False, (50,50,50))
         about2_rect = about2.get_rect(center = (400, 350))
+        high = alagard.render('best time: ' + str(score / 1000), False, (0,200,0))
+        high_rect = high.get_rect(center = (400, 200))
         self.display.blit(about2, about2_rect)
         self.display.blit(message, message_rect)
         self.display.blit(about, about_rect)
+        self.display.blit(high, high_rect)
 
-    def restart(self):
-        data = {}
-        data['map_data'] = {"terrain": "..\map_data\map_data.csv"}
-        data['screen_width'] = 800
-        data['screen_height'] = 600
+    def restart(self, data):
         data['player_start_position'] = (377,384)
         data['player_start_direction'] = (0,0)
-        data['player_facing'] = 'right'
+        data['player_facing'] = 'left'
         data['map_start'] = 31400
-        data['timer'] = 0
-
+        data['score'] = 0
         with open('..\saving\save_last.txt', 'w') as save_file:
             json.dump(data, save_file)
         

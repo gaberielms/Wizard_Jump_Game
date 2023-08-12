@@ -12,9 +12,6 @@ class Block(pygame.sprite.Sprite):
         self.rect.y += vert
         self.deviation += vert
 
-    def save(self):
-        return self.deviation
-
 class StaticBlock(Block):
     def __init__(self, position, size, surface):
         super().__init__(position, size)
