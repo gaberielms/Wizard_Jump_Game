@@ -1,28 +1,26 @@
 import pygame, json
 from pathlib import Path
+from buttons import Button
 
 class Menu:
 
     def __init__(self, display):
         self.display = display
         self.options = ('Play', 'Settings', 'About', 'Restart Game')
-        self.option_group = pygame.sprite.Group()
+        self.buttons = pygame.sprite.Group()
         self.background = pygame.image.load(Path('graphics/menu/menu.jpg')).convert()
         self.main_font = pygame.font.Font(Path('fonts/alagard.ttf'), 30)
-        self.button_font = pygame.font.Font(Path('fonts/alagard.ttf'), 25)
+        self.main_menu = True
 
         for option in self.options:
-            alagard = self.button_font
-            msg = alagard.render(option, False, (50,50,50))
             loc = (400, (self.options.index(option) * 75) + 240)
-            spr1 = MenuSprite(msg, loc)
-            self.option_group.add(spr1)
+            self.buttons.add(Button(loc, option))
 
     def show_main(self):
         self.main_menu = True
         self.display.blit(self.background, (0,0))
 
-        self.option_group.draw(self.display)
+        self.buttons.draw(self.display)
         alagard = self.main_font
         message = alagard.render('Wizard Jump', False, (0, 150, 255))
         message_rect = message.get_rect(center = (400,140))
@@ -38,9 +36,9 @@ class Menu:
         alagard = self.main_font
         message = alagard.render('Settings', False, (50,50,50))
         message_rect = message.get_rect(center = (400,150))
-        message2 = alagard.render('YOU CANT CHANGE ANYTHING', False, (50,50,50))
+        message2 = alagard.render('There are none...', False, (50,50,50))
         message2_rect = message2.get_rect(center = (400, 250))
-        message3 = alagard.render('lol get fucked', False, (50,50,50))
+        message3 = alagard.render('sorry', False, (50,50,50))
         message3_rect = message3.get_rect(center = (400, 300))
         self.display.blit(message3, message3_rect)
         self.display.blit(message2, message2_rect)
@@ -53,9 +51,9 @@ class Menu:
         alagard = self.main_font
         message = alagard.render('About', False, (50,50,50))
         message_rect = message.get_rect(center = (400,150))
-        about = alagard.render('if the game breaks it is not my fault', False, (50,50,50))
+        about = alagard.render('use W, A, D or ^, <, > for moving', False, (50,50,50))
         about_rect = about.get_rect(center = (400, 300))
-        about2 = alagard.render('just hit restart button dumbass', False, (50,50,50))
+        about2 = alagard.render('good luck', False, (50,50,50))
         about2_rect = about2.get_rect(center = (400, 350))
         high = alagard.render('best time: ' + str(score / 1000), False, (0,200,0))
         high_rect = high.get_rect(center = (400, 200))
@@ -74,18 +72,3 @@ class Menu:
             json.dump(data, save_file)
         
         return data
-
-class MenuSprite(pygame.sprite.Sprite):
-
-    def __init__(self, text, location):
-        super().__init__()
-        self.text = text
-        self.image = pygame.surface.Surface((170,60))
-        self.set_colour('white')
-        
-        self.rect = self.image.get_rect(center = location)
-
-    def set_colour(self, colour):
-        self.image.fill(colour)
-        text_rect = self.text.get_rect(center = (85,30))
-        self.image.blit(self.text, text_rect)

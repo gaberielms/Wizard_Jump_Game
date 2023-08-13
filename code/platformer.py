@@ -8,7 +8,7 @@ from pathlib import Path
 def main():
     # setup
     pygame.init()
-    icon = pygame.image.load(Path('graphics/player/idle/player_idle1.png'))
+    icon = pygame.image.load(Path('graphics/icon.png'))
     pygame.display.set_icon(icon)
     pygame.display.set_caption('Wizard Jump')
 
@@ -51,34 +51,27 @@ def main():
                 score = 0
                 game_active = True
                 start_time = pygame.time.get_ticks()
-                
+
         # what is displayed in menu
-            if not game_active:
+            if not game_active and menu.main_menu:
+                for button in menu.buttons.sprites():
+                    button.set_colour(pygame.mouse.get_pos(), screen)
+                    button.get_input(pygame.mouse.get_pos())
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if menu.main_menu:
-                        for spr in menu.option_group.sprites():
-                            if spr.rect.collidepoint(event.pos):
-                                spr.set_colour('red')
-                                menu.show_main()
-                if event.type == pygame.MOUSEBUTTONUP:
-                    if menu.main_menu:
-                        for spr in menu.option_group.sprites():
-                            spr.set_colour('white')
-                            menu.show_main()
-                        if menu.option_group.sprites()[0].rect.collidepoint(event.pos):
-                            game_active = True
-                            start_time = pygame.time.get_ticks() - score
-                            score = 0
-                        elif menu.option_group.sprites()[1].rect.collidepoint(event.pos):
-                            menu.show_settings()
-                        elif menu.option_group.sprites()[2].rect.collidepoint(event.pos):
-                            menu.show_about(data['high_score'])
-                        elif menu.option_group.sprites()[3].rect.collidepoint(event.pos):
-                            reseter(map)
-                            score = 0
-                            game_active = True
-                            start_time = pygame.time.get_ticks()
-        
+                    buttons = menu.buttons.sprites()
+                    if buttons[0].hover:
+                        game_active = True
+                        start_time = pygame.time.get_ticks() - score
+                        score = 0
+                    elif buttons[1].hover:
+                        menu.show_settings()
+                    elif buttons[2].hover:
+                        menu.show_about(data['high_score'])
+                    elif buttons[3].hover:
+                        data = menu.restart(data)
+                        map = Map(data, screen)
+                        start_time = pygame.time.get_ticks()
+    
         # what gets displayed in game
         if game_active:
             screen.fill((128,128,128))
