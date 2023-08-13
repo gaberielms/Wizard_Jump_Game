@@ -4,6 +4,7 @@ from player import Player
 from camera import Camera
 from importer import *
 from particles import Particles
+from pathlib import Path
 
 class Map:
 
@@ -22,7 +23,7 @@ class Map:
         self.blocks = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.player.add(Player(player_location, player_facing))
-        block_layout = import_layout(layout['terrain'])
+        block_layout = import_layout(Path(layout['terrain']))
         self.camera = Camera(self.start_height, self.player)
 
         for row_index, row in enumerate(block_layout):
@@ -31,7 +32,7 @@ class Map:
                     x = col_index * tile_size
                     y = (row_index * tile_size) - self.start_height
 
-                    terrain_blck_lst = import_cut_graphic('..\graphics\map\dungeon_blocks.png')
+                    terrain_blck_lst = import_cut_graphic(Path('graphics/map/dungeon_blocks.png'))
                     blck_sfc = terrain_blck_lst[int(place)]
                     block = StaticBlock((x,y), tile_size, blck_sfc)
                     self.blocks.add(block)

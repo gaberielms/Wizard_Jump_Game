@@ -1,5 +1,6 @@
 import pygame
 from importer import import_folder
+from pathlib import Path
 
 
 class Player(pygame.sprite.Sprite):
@@ -32,11 +33,11 @@ class Player(pygame.sprite.Sprite):
             self.facing_right = False
 
     def import_player_assets(self):
-        character_path = '..\graphics\player\\'
+        character_path = Path('graphics/player')
         self.animations = {'idle':[], 'run':[], 'jump':[], 'fall':[]}
 
         for animation in self.animations.keys():
-            full_path = character_path + animation
+            full_path = character_path / animation
             self.animations[animation] = import_folder(full_path)
 
     def animate(self):

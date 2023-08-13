@@ -1,5 +1,5 @@
 import pygame, json
-from pygame.sprite import Group
+from pathlib import Path
 
 class Menu:
 
@@ -7,10 +7,12 @@ class Menu:
         self.display = display
         self.options = ('Play', 'Settings', 'About', 'Restart Game')
         self.option_group = pygame.sprite.Group()
-        self.background = pygame.image.load('..\graphics\menu\menu.jpg').convert()
+        self.background = pygame.image.load(Path('graphics/menu/menu.jpg')).convert()
+        self.main_font = pygame.font.Font(Path('fonts/alagard.ttf'), 30)
+        self.button_font = pygame.font.Font(Path('fonts/alagard.ttf'), 25)
 
         for option in self.options:
-            alagard = pygame.font.Font('..\\fonts\\alagard.ttf', 25)
+            alagard = self.button_font
             msg = alagard.render(option, False, (50,50,50))
             loc = (400, (self.options.index(option) * 75) + 240)
             spr1 = MenuSprite(msg, loc)
@@ -21,7 +23,7 @@ class Menu:
         self.display.blit(self.background, (0,0))
 
         self.option_group.draw(self.display)
-        alagard = pygame.font.Font('..\\fonts\\alagard.ttf', 30)
+        alagard = self.main_font
         message = alagard.render('Wizard Jump', False, (0, 150, 255))
         message_rect = message.get_rect(center = (400,140))
         message2 = alagard.render('(now speedrunable)', False, (0, 150, 255))
@@ -33,7 +35,7 @@ class Menu:
         self.main_menu = False
         self.display.fill((176,180,255))
 
-        alagard = pygame.font.Font('..\\fonts\\alagard.ttf', 30)
+        alagard = self.main_font
         message = alagard.render('Settings', False, (50,50,50))
         message_rect = message.get_rect(center = (400,150))
         message2 = alagard.render('YOU CANT CHANGE ANYTHING', False, (50,50,50))
@@ -48,7 +50,7 @@ class Menu:
         self.main_menu = False
         self.display.fill((176,180,255))
 
-        alagard = pygame.font.Font('..\\fonts\\alagard.ttf', 30)
+        alagard = self.main_font
         message = alagard.render('About', False, (50,50,50))
         message_rect = message.get_rect(center = (400,150))
         about = alagard.render('if the game breaks it is not my fault', False, (50,50,50))
@@ -68,7 +70,7 @@ class Menu:
         data['player_facing'] = 'left'
         data['map_start'] = 31400
         data['score'] = 0
-        with open('..\saving\save_last.txt', 'w') as save_file:
+        with open(Path('saving/save_last.txt'), 'w') as save_file:
             json.dump(data, save_file)
         
         return data
