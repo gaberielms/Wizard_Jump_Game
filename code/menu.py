@@ -65,7 +65,7 @@ class Menu:
         self.display.blit(high, high_rect)
 
     def restart(self, data):
-        data['player_start_position'] = (377,384)
+        data['player_start_position'] = (400,384)
         data['player_start_direction'] = (0,0)
         data['player_facing'] = 'left'
         data['map_start'] = 31400
