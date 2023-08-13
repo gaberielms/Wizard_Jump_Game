@@ -66,7 +66,7 @@ class Menu:
         data['player_start_position'] = (377,384)
         data['player_start_direction'] = (0,0)
         data['player_facing'] = 'left'
-        data['map_start'] = 31400
+        data['map_start'] = 29992
         data['score'] = 0
         with open('..\saving\save_last.txt', 'w') as save_file:
             json.dump(data, save_file)
