@@ -62,8 +62,6 @@ while True:
                     elif menu.option_group.sprites()[1].rect.collidepoint(event.pos):
                         menu.show_settings()
                     elif menu.option_group.sprites()[2].rect.collidepoint(event.pos):
-                        if map.current_y < map.blocks.sprites()[0].rect.top and score < data['high_score']:
-                            data['high_score'] = score
                         menu.show_about(data['high_score'])
                     elif menu.option_group.sprites()[3].rect.collidepoint(event.pos):
                         data = menu.restart(data)
@@ -80,6 +78,8 @@ while True:
     
     # what gets displayed in game
     if game_active:
+        if map.current_y < map.blocks.sprites()[0].rect.top and score < data['high_score']:
+            data['high_score'] = score
         screen.fill((128,128,128))
         map.run()
         score = display_score(screen, start_time)
