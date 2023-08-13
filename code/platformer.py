@@ -2,13 +2,16 @@ import pygame, sys, json
 from map import Map
 from menu import Menu
 from particles import Particles
-from scores import display_score
+from scores import display_score, reseter
 from pathlib import Path
 
 def main():
     # setup
     pygame.init()
-    
+    icon = pygame.image.load(Path('graphics/player/idle/player_idle1.png'))
+    pygame.display.set_icon(icon)
+    pygame.display.set_caption('Wizard Jump')
+
     # loading save
     with open(Path('saving/save_last.txt')) as save_file:
         data = json.load(save_file)
@@ -43,6 +46,12 @@ def main():
                     game_active = False
                 menu.show_main()
         
+            if keys[pygame.K_r]:
+                reseter(map)
+                score = 0
+                game_active = True
+                start_time = pygame.time.get_ticks()
+                
         # what is displayed in menu
             if not game_active:
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -65,17 +74,10 @@ def main():
                         elif menu.option_group.sprites()[2].rect.collidepoint(event.pos):
                             menu.show_about(data['high_score'])
                         elif menu.option_group.sprites()[3].rect.collidepoint(event.pos):
-                            data = menu.restart(data)
+                            reseter(map)
                             score = 0
-                            map = Map(data, screen)
                             game_active = True
                             start_time = pygame.time.get_ticks()
-                if menu.main_menu and keys[pygame.K_r]:
-                    data = menu.restart(data)
-                    score = 0
-                    map = Map(data, screen)
-                    game_active = True
-                    start_time = pygame.time.get_ticks()
         
         # what gets displayed in game
         if game_active:
