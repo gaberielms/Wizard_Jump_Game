@@ -3,6 +3,7 @@ import pygame, random
 
 class Particles:
     
+    
     def __init__(self, display):
         self.particles = []
         self.display = display

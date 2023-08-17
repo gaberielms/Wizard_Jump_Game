@@ -1,7 +1,9 @@
 import pygame
 from pathlib import Path
 
+
 class Camera:
+
 
     def __init__(self, start_pos, player):
         self.player = player
@@ -9,8 +11,8 @@ class Camera:
         self.blocks = pygame.sprite.Group()
         self.map_pos = start_pos
         alagard = pygame.font.Font(Path('fonts/alagard.ttf'), 30)
-        self.game_name = alagard.render('Wizard Jump', False, (176,180,255))
-        self.game_name_rect = self.game_name.get_rect(center = (400,500))
+        self.game_name = alagard.render('Wizard Jump', True, (176,180,255))
+        self.game_name_rect = self.game_name.get_rect(center = (400,550))
 
     def update(self):
         target_pos = self.target.collision_rect.centery

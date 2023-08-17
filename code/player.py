@@ -5,6 +5,7 @@ from pathlib import Path
 
 class Player(pygame.sprite.Sprite):
 
+
     def __init__(self, position, facing):
         super().__init__()
         self.import_player_assets()

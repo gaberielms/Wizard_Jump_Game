@@ -6,7 +6,9 @@ from importer import *
 from particles import Particles
 from pathlib import Path
 
+
 class Map:
+
 
     def __init__(self, data, surface):
         # world map setup
@@ -29,25 +31,24 @@ class Map:
         for row_index, row in enumerate(block_layout):
             for col_index, place  in enumerate(row):
                 if place != '-1':
-                    x = col_index * tile_size
-                    y = (row_index * tile_size) - self.start_height
+                    x = col_index * TILESIZE
+                    y = (row_index * TILESIZE) - self.start_height
 
                     terrain_blck_lst = import_cut_graphic(Path('graphics/map/dungeon_blocks.png'))
                     blck_sfc = terrain_blck_lst[int(place)]
-                    block = StaticBlock((x,y), tile_size, blck_sfc)
+                    block = StaticBlock((x,y), TILESIZE, blck_sfc)
                     self.blocks.add(block)
                     self.camera.blocks.add(block)
-
 
     def horizontal_movement(self):
         player = self.player.sprite
         player.collision_rect.x += player.direction.x * player.speed
 
-        if player.collision_rect.left <= tile_size:
-            player.collision_rect.left = tile_size
+        if player.collision_rect.left <= TILESIZE:
+            player.collision_rect.left = TILESIZE
             player.on_left = True
-        elif player.collision_rect.right >= (self.screen_width - tile_size):
-            player.collision_rect.right = (self.screen_width - tile_size)
+        elif player.collision_rect.right >= (self.screen_width - TILESIZE):
+            player.collision_rect.right = (self.screen_width - TILESIZE)
             player.on_right = True
 
         for block in self.blocks.sprites():
@@ -60,7 +61,6 @@ class Map:
                     player.collision_rect.right = block.rect.left
                     player.on_right = True
                     self.current_x = player.rect.right
-
 
     def vertical_movement(self):
         player = self.player.sprite

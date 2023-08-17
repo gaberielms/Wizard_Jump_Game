@@ -2,7 +2,8 @@ from csv import reader
 import pygame
 from os import walk
 
-tile_size = 32
+TILESIZE = 32
+
 
 def import_layout(path):
     terrain_map = []
@@ -15,16 +16,16 @@ def import_layout(path):
 def import_cut_graphic(path):
     surface = pygame.image.load(path).convert_alpha()
     surface = pygame.transform.scale(surface, (128,128))
-    blockx = surface.get_size()[0] // tile_size
-    blocky = surface.get_size()[1] // tile_size
+    blockx = surface.get_size()[0] // TILESIZE
+    blocky = surface.get_size()[1] // TILESIZE
     
     cut_tiles = []
     for row in range(blockx):
         for col in range(blocky):
-            x = col * tile_size
-            y = row * tile_size
-            new_sfc = pygame.Surface((tile_size,tile_size), flags = pygame.SRCALPHA)
-            new_sfc.blit(surface, (0,0), pygame.Rect(x,y,tile_size,tile_size))
+            x = col * TILESIZE
+            y = row * TILESIZE
+            new_sfc = pygame.Surface((TILESIZE,TILESIZE), flags = pygame.SRCALPHA)
+            new_sfc.blit(surface, (0,0), pygame.Rect(x,y,TILESIZE,TILESIZE))
             cut_tiles.append(new_sfc)
 
     return cut_tiles

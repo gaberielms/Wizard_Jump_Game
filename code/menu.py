@@ -1,74 +1,107 @@
-import pygame, json
+import pygame, buttons
 from pathlib import Path
-from buttons import Button
+
 
 class Menu:
 
-    def __init__(self, display):
+
+    def __init__(self, display, menu_status, data) -> None:
         self.display = display
-        self.options = ('Play', 'Settings', 'About', 'Restart Game')
-        self.buttons = pygame.sprite.Group()
-        self.background = pygame.image.load(Path('graphics/menu/menu.jpg')).convert()
-        self.main_font = pygame.font.Font(Path('fonts/alagard.ttf'), 30)
-        self.main_menu = True
+        self.menu_status = menu_status
+        self.high_score = data['high_score']
+        self.data = data
+        self.title = ''
+        self.messages = []
+        self.title_font = pygame.font.Font(Path('fonts/alagard.ttf'), 30)
+        self.font = pygame.font.Font(Path('fonts/alagard.ttf'), 25)
+        self.info = self.update()
+        self.bg = self.info[0]
+        options = self.info[1]
+        self.sliders = self.info[2]
 
-        for option in self.options:
-            loc = (400, (self.options.index(option) * 75) + 240)
-            self.buttons.add(Button(loc, option))
+        self.buttons = []
+        for option in options:
+            loc = (400, (options.index(option) * 75) + 240)
+            self.buttons.append(buttons.Button(loc, option))
 
-    def show_main(self):
-        self.main_menu = True
-        self.display.blit(self.background, (0,0))
-
-        self.buttons.draw(self.display)
-        alagard = self.main_font
-        message = alagard.render('Wizard Jump', False, (0, 150, 255))
-        message_rect = message.get_rect(center = (400,140))
-        message2 = alagard.render('(now speedrunable)', False, (0, 150, 255))
-        message2_rect = message2.get_rect(center = (400,175))
-        self.display.blit(message, message_rect)
-        self.display.blit(message2, message2_rect)
-
-    def show_settings(self):
-        self.main_menu = False
-        self.display.fill((176,180,255))
-
-        alagard = self.main_font
-        message = alagard.render('Settings', False, (50,50,50))
-        message_rect = message.get_rect(center = (400,150))
-        message2 = alagard.render('There are none...', False, (50,50,50))
-        message2_rect = message2.get_rect(center = (400, 250))
-        message3 = alagard.render('sorry', False, (50,50,50))
-        message3_rect = message3.get_rect(center = (400, 300))
-        self.display.blit(message3, message3_rect)
-        self.display.blit(message2, message2_rect)
-        self.display.blit(message, message_rect)
-
-    def show_about(self, score):
-        self.main_menu = False
-        self.display.fill((176,180,255))
-
-        alagard = self.main_font
-        message = alagard.render('About', False, (50,50,50))
-        message_rect = message.get_rect(center = (400,150))
-        about = alagard.render('use W, A, D or ^, <, > for moving', False, (50,50,50))
-        about_rect = about.get_rect(center = (400, 300))
-        about2 = alagard.render('good luck', False, (50,50,50))
-        about2_rect = about2.get_rect(center = (400, 350))
-        high = alagard.render('best time: ' + str(score / 1000), False, (0,200,0))
-        high_rect = high.get_rect(center = (400, 200))
-        self.display.blit(about2, about2_rect)
-        self.display.blit(message, message_rect)
-        self.display.blit(about, about_rect)
-        self.display.blit(high, high_rect)
-
-    def restart(self, data):
-        data['player_start_position'] = (400,384)
-        data['player_start_direction'] = (0,0)
-        data['player_facing'] = 'left'
-        data['map_start'] = 31400
-        data['score'] = 0
-        with open(Path('saving/save_last.txt'), 'w') as save_file:
-            json.dump(data, save_file)
+    def run(self):
+        self.display.blit(self.bg, (0,0))
+        self.display.blit(self.title, self.title_rect)
+        for message, message_rect in self.messages:
+            self.display.blit(message, message_rect)
         
-        return data
+
+        mouse_pos = pygame.mouse.get_pos()
+        mouse = pygame.mouse.get_pressed()
+        for slider in self.sliders:
+            if slider.container_rect.collidepoint(mouse_pos):
+                if mouse[0]:
+                    slider.grabbed = True
+            if not mouse[0]:
+                slider.grabbed = False
+            if slider.button_rect.collidepoint(mouse_pos):  
+                slider.hover = True
+            if slider.grabbed:
+                slider.move_slider(mouse_pos)
+                slider.hover = True
+                slider.display_value(self.display)
+            else:
+                slider.hover = False
+            slider.update(self.display)
+
+        for button in self.buttons:
+            if button.rect.collidepoint(mouse_pos):
+                if mouse[0]:
+                    button.pressed = True
+                button.hover = True
+            else:
+                button.hover = False
+            if button.pressed:
+                if not button.text_input == 'Play' and not button.text_input == 'Restart Game':
+                    self.menu_status = button.text_input
+                return button.text_input
+            button.update(self.display)
+
+    def update(self):
+        options = []
+        sliders = []
+        background = pygame.surface.Surface((800,600))
+        background.fill((176,180,255))
+
+        if self.menu_status == 'main':
+            self.title = self.title_font.render('Wizard Jump', True, (0, 150, 255))
+            self.title_rect = self.title.get_rect(center = (400,140))
+            message = self.title_font.render('(no longer speedrunable)', True, (0, 150, 255))
+            message_rect = message.get_rect(center = (400,175))
+
+            background = pygame.image.load(Path('graphics/menu/menu.jpg')).convert_alpha()
+            options = ['Play', 'Settings', 'About', 'Restart Game']
+
+        elif self.menu_status == 'Settings':
+            self.title = self.title_font.render('Settings', True, (50,50,50))
+            self.title_rect = self.title.get_rect(center = (400,100))
+            volume = self.font.render('Music', True, (50,50,50))
+            volume_rect = volume.get_rect(center = (400,400))
+            volume_rect.right = 350
+            other = self.font.render('Sounds', True, (50,50,50))
+            other_rect = other.get_rect(center = (400, 350))
+            other_rect.right = 350
+
+            sliders.append(buttons.Slider((450, volume_rect.centery), (175, 25), self.data['volume'], 0, 100))
+            sliders.append(buttons.Slider((450, other_rect.centery), (175, 25), self.data['sounds'], 0, 100))
+            self.messages.append((volume, volume_rect))
+            self.messages.append((other, other_rect))
+        
+        elif self.menu_status == 'About':
+            self.title = self.title_font.render('About', True, (50,50,50))
+            self.title_rect = self.title.get_rect(center = (400,100))
+            message = self.font.render('use W, A, D or ^, <, > for moving', False, (50,50,50))
+            message_rect = message.get_rect(center = (400, 300))
+            high = self.title_font.render('best time: ' + str(self.high_score / 1000), False, (0,200,0))
+            high_rect = high.get_rect(center = (400,200))
+
+            self.messages.append((message, message_rect))
+            self.messages.append((high, high_rect))
+
+        return [background, options, sliders]
+    
