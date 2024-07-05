@@ -26,7 +26,13 @@ class Map:
         self.player = pygame.sprite.GroupSingle()
         self.player.add(Player(player_location, player_facing))
         block_layout = import_layout(Path(layout['terrain']))
-        self.camera = Camera(self.start_height, self.player)
+        self.camera = Camera(self.start_height, self.player, self.display_sfc)
+
+        # background loading
+        background = import_background(Path('graphics/background'))
+        for image in background:
+            block = StaticBlock((0, 24000 - self.start_height - (8000 * background.index(image))), (800, 8000), image)
+            self.camera.blocks.add(block)
 
         for row_index, row in enumerate(block_layout):
             for col_index, place  in enumerate(row):
@@ -36,7 +42,7 @@ class Map:
 
                     terrain_blck_lst = import_cut_graphic(Path('graphics/map/dungeon_blocks.png'))
                     blck_sfc = terrain_blck_lst[int(place)]
-                    block = StaticBlock((x,y), TILESIZE, blck_sfc)
+                    block = StaticBlock((x,y), (TILESIZE, TILESIZE), blck_sfc)
                     self.blocks.add(block)
                     self.camera.blocks.add(block)
 
@@ -91,7 +97,7 @@ class Map:
                     self.particles.add_particles(player.rect.right + 1, player.rect.bottom, player.direction.x, 5)
 
     def run(self):
-        self.camera.draw(self.display_sfc)
+        self.camera.draw()
         self.camera.update()
         self.player.update()
         self.vertical_movement()

@@ -6,7 +6,7 @@ class Block(pygame.sprite.Sprite):
 
     def __init__(self, position, size):
         super().__init__()
-        self.image = pygame.Surface((size,size))
+        self.image = pygame.Surface(size)
         self.rect = self.image.get_rect(topleft = position)
         self.deviation = 0
 

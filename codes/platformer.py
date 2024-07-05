@@ -49,13 +49,7 @@ def run():
                 if game_active:
                     game_active = False
                 menu = Menu(screen, 'main', data)
-        
-            if keys[pygame.K_r]:
-                reseter(map)
-                score = 0
-                game_active = True
-                start_time = pygame.time.get_ticks()
-
+                
         # what is displayed in menu
             if not game_active:
                 x = menu.run()
@@ -79,7 +73,6 @@ def run():
 
         # what gets displayed in game
         if game_active:
-            screen.fill((128,128,128))
             map.run()
             score = display_score(screen, start_time)
             if map.current_y < map.blocks.sprites()[0].rect.top and score < data['high_score']:

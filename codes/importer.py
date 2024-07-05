@@ -40,3 +40,15 @@ def import_folder(path):
             sfc_lst.append(img_sfc)
     
     return sfc_lst
+
+def import_background(path):
+    sfc_lst = []
+    for _, __, img_files in walk(path):
+        for image in img_files:
+            full_path = path / image
+            img_sfc = pygame.image.load(full_path).convert()
+            img_sfc = pygame.transform.scale(img_sfc, (800, 8000))
+            sfc_lst.append(img_sfc)
+            
+    return sfc_lst
+
